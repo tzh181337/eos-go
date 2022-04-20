@@ -200,3 +200,17 @@ func SigDigest(chainID, payload, contextFreeData []byte) []byte {
 	}
 	return h.Sum(nil)
 }
+
+// AMAX Private key
+func (b *KeyBag) AddAmaxKey(wifKey string) error {
+	privKey, err := ecc.NewAMAPrivateKey(wifKey)
+	if err != nil {
+		return err
+	}
+
+	return b.Append(privKey)
+}
+
+func (b *KeyBag) ImportAmaxPrivateKey(ctx context.Context, wifPrivKey string) (err error) {
+	return b.AddAmaxKey(wifPrivKey)
+}

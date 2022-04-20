@@ -15,6 +15,7 @@ var PublicKeyK1Prefix = "PUB_K1_"
 var PublicKeyR1Prefix = "PUB_R1_"
 var PublicKeyWAPrefix = "PUB_WA_"
 var PublicKeyPrefixCompat = "EOS"
+var PublicKeyAMPrefix = "AM"
 
 var publicKeyDataSize = new(int)
 
@@ -62,6 +63,8 @@ func NewPublicKeyFromData(data []byte) (out PublicKey, err error) {
 		out.inner = &innerR1PublicKey{}
 	case CurveWA:
 		out.inner = &innerWAPublicKey{}
+	case CurveK1AM:
+		out.inner = &innerK1AMPublicKey{}
 	default:
 		return out, fmt.Errorf("unsupported curve prefix %q", out.Curve)
 	}
@@ -92,6 +95,10 @@ func NewPublicKey(pubKey string) (out PublicKey, err error) {
 
 	if strings.HasPrefix(pubKey, PublicKeyPrefixCompat) {
 		return newPublicKey(CurveK1, pubKey[len(PublicKeyPrefixCompat):], newInnerK1PublicKey)
+	}
+
+	if strings.HasPrefix(pubKey, PublicKeyAMPrefix) {
+		return newPublicKey(CurveK1, pubKey[len(PublicKeyAMPrefix):], newInnerK1AMPublicKey)
 	}
 
 	if strings.HasPrefix(pubKey, PublicKeyK1Prefix) {

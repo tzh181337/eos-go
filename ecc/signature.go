@@ -149,3 +149,58 @@ func (s *Signature) UnmarshalJSON(data []byte) (err error) {
 
 	return
 }
+
+// AMAX兼容
+func MustNewAMASignatureFromData(data []byte) Signature {
+	sig, err := NewAMASignatureFromData(data)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	return sig
+}
+
+func NewAMASignatureFromData(data []byte) (Signature, error) {
+	signature := Signature{
+		Curve:   CurveID(data[0]), // 1 byte
+		Content: data[1:],         // 65 bytes for K1 and R1, variable length for WA
+	}
+
+	switch signature.Curve {
+	case CurveK1:
+		signature.inner = &innerK1AMASignature{}
+	default:
+		return Signature{}, fmt.Errorf("invalid curve  %q", signature.Curve)
+	}
+
+	return signature, signature.Validate()
+}
+
+func MustNewAMASignature(fromText string) Signature {
+	signature, err := NewAMASignature(fromText)
+	if err != nil {
+		panic(fmt.Errorf("invalid signature string: %w", err))
+	}
+
+	return signature
+}
+
+func NewAMASignature(signature string) (out Signature, err error) {
+	if len(signature) < 8 {
+		return out, fmt.Errorf("invalid format")
+	}
+
+	// We had a for/loop using a map before, this a disavantadge. The ordering was
+	// not constant so we were not optimizing for the fact that compat keys appears way more
+	// often than all others.
+	//
+	// We now have an unrolled for/loop specially ordered so that the most occurring prefix
+	// is checked first.
+
+	prefix := signature[0:7]
+	if prefix == SignatureK1Prefix {
+		return newSignature(CurveK1, signature[7:], newInnerK1AMASignature)
+	}
+
+	return out, fmt.Errorf("unknown prefix %q", prefix)
+}

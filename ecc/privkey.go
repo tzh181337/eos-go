@@ -135,3 +135,71 @@ func (p *PrivateKey) UnmarshalJSON(v []byte) (err error) {
 
 	return
 }
+
+// AMAX兼容
+
+func NewRandomAMAPrivateKey() (*PrivateKey, error) {
+	return newRandomAMAPrivateKey(cryptorand.Reader)
+}
+
+func NewDeterministicAMAPrivateKey(randSource io.Reader) (*PrivateKey, error) {
+	return newRandomAMAPrivateKey(randSource)
+}
+
+func newRandomAMAPrivateKey(randSource io.Reader) (*PrivateKey, error) {
+	rawPrivKey := make([]byte, 32)
+	written, err := io.ReadFull(randSource, rawPrivKey)
+	if err != nil {
+		return nil, fmt.Errorf("error feeding crypto-rand numbers to seed ephemeral private key: %w", err)
+	}
+	if written != 32 {
+		return nil, fmt.Errorf("couldn't write 32 bytes of randomness to seed ephemeral private key")
+	}
+
+	privKey, _ := btcec.PrivKeyFromBytes(btcec.S256(), rawPrivKey)
+
+	inner := &innerK1AMPrivateKey{privKey: privKey}
+	return &PrivateKey{Curve: CurveK1, inner: inner}, nil
+}
+
+func NewAMAPrivateKey(wif string) (*PrivateKey, error) {
+	// Strip potential prefix, and set curve
+	var privKeyMaterial string
+	if strings.HasPrefix(wif, PrivateKeyPrefix) { // "PVT_"
+		privKeyMaterial = wif[len(PrivateKeyPrefix):]
+
+		curvePrefix := privKeyMaterial[:3]
+		privKeyMaterial = privKeyMaterial[3:] // remove "K1_"...
+
+		switch curvePrefix {
+		case "K1_":
+
+			wifObj, err := btcutil.DecodeWIF(privKeyMaterial)
+			if err != nil {
+				return nil, err
+			}
+			inner := &innerK1AMPrivateKey{privKey: wifObj.PrivKey}
+			return &PrivateKey{Curve: CurveK1, inner: inner}, nil
+		default:
+			return nil, fmt.Errorf("unsupported curve prefix %q", curvePrefix)
+		}
+
+	} else { // no-prefix, like before
+
+		wifObj, err := btcutil.DecodeWIF(wif)
+		if err != nil {
+			return nil, err
+		}
+		inner := &innerK1AMPrivateKey{privKey: wifObj.PrivKey}
+		return &PrivateKey{Curve: CurveK1, inner: inner}, nil
+	}
+}
+
+func NewAMAPrivateKeyFromSeed(seed string) (*PrivateKey, error) {
+	hashByte := sha256.Sum256([]byte(seed))
+	privateKey, err := NewDeterministicAMAPrivateKey(bytes.NewBuffer(hashByte[:]))
+	if err != nil {
+		return nil, err
+	}
+	return privateKey, nil
+}
