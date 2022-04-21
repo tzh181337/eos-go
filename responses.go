@@ -85,14 +85,16 @@ type ProcessedTransaction struct {
 	Transaction SignedTransaction `json:"trx"`
 }
 
+// FIXME: 下面的AuthSequence jaon反序列化时会出错，暂时类型改为[]interface{}
 type ActionTraceReceipt struct {
-	Receiver        AccountName                    `json:"receiver"`
-	ActionDigest    Checksum256                    `json:"act_digest"`
-	GlobalSequence  Uint64                         `json:"global_sequence"`
-	ReceiveSequence Uint64                         `json:"recv_sequence"`
-	AuthSequence    []TransactionTraceAuthSequence `json:"auth_sequence"` // [["account", sequence], ["account", sequence]]
-	CodeSequence    Varuint32                      `json:"code_sequence"`
-	ABISequence     Varuint32                      `json:"abi_sequence"`
+	Receiver        AccountName `json:"receiver"`
+	ActionDigest    Checksum256 `json:"act_digest"`
+	GlobalSequence  Uint64      `json:"global_sequence"`
+	ReceiveSequence Uint64      `json:"recv_sequence"`
+	//AuthSequence    []TransactionTraceAuthSequence `json:"auth_sequence"` // [["account", sequence], ["account", sequence]]
+	AuthSequence []interface{} `json:"auth_sequence"` // [["account", sequence], ["account", sequence]]
+	CodeSequence Varuint32     `json:"code_sequence"`
+	ABISequence  Varuint32     `json:"abi_sequence"`
 }
 
 type ActionTrace struct {
