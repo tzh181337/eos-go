@@ -9,7 +9,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/eoscanada/eos-go/ecc"
+	"github.com/armoniax/eos-go/ecc"
 )
 
 type Signer interface {

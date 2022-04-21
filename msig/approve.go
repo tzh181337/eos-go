@@ -1,7 +1,7 @@
 package msig
 
 import (
-	eos "github.com/eoscanada/eos-go"
+	eos "github.com/armoniax/eos-go"
 )
 
 // NewApprove returns a `approve` action that lives on the

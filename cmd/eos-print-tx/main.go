@@ -7,7 +7,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/eoscanada/eos-go"
+	"github.com/armoniax/eos-go"
 )
 
 func main() {

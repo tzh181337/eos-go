@@ -1,6 +1,6 @@
 ## 用 Go 语言与 EOS.IO 交互的 API 库
 
-[![GoDoc](https://godoc.org/github.com/eoscanada/eos-go?status.svg)](https://godoc.org/github.com/eoscanada/eos-go)
+[![GoDoc](https://godoc.org/github.com/armoniax/eos-go?status.svg)](https://godoc.org/github.com/armoniax/eos-go)
 
 该库提供对数据架构（二进制打包和JSON接口）的简单访问，
 以及对远程或本地运行的EOS.IO RPC服务器的API调用。
@@ -11,7 +11,7 @@
 因为我们要追着主网 `eosio` 代码库的脚步，而它的变化又那么快。
 
 该库主网启动编排工具是 `eosio` 的基础，网址：
-https://github.com/eoscanada/eos-bios
+https://github.com/armoniax/eos-bios
 
 ### 基本用法
 
@@ -23,7 +23,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	eos "github.com/eoscanada/eos-go"
+	eos "github.com/armoniax/eos-go"
 	cli "github.com/streamingfast/cli"
 )
 

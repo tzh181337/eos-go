@@ -1,7 +1,7 @@
 package system
 
 import (
-	eos "github.com/eoscanada/eos-go"
+	eos "github.com/armoniax/eos-go"
 )
 
 // NewInitSystem returns a `init` action that lives on the

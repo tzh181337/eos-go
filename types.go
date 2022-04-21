@@ -15,7 +15,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/eoscanada/eos-go/ecc"
+	"github.com/armoniax/eos-go/ecc"
 	"github.com/tidwall/gjson"
 )
 
@@ -374,14 +374,14 @@ func (s *Symbol) UnmarshalJSON(data []byte) error {
 	if err != nil {
 		return err
 	}
-	
+
 	sym, err := StringToSymbol(str)
 	if err != nil {
 		return err
 	}
-	
+
 	*s = sym
-	
+
 	return nil
 }
 
