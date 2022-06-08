@@ -25,7 +25,7 @@ func (k *innerK1AMPrivateKey) sign(hash []byte) (out Signature, err error) {
 		return out, fmt.Errorf("canonical, %s", err)
 	}
 
-	return Signature{Curve: CurveK1, Content: compactSig, inner: &innerK1Signature{}}, nil
+	return Signature{Curve: CurveK1, Content: compactSig, inner: &innerK1AMASignature{}}, nil
 }
 
 func (k *innerK1AMPrivateKey) string() string {
