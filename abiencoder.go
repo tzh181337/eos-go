@@ -305,7 +305,8 @@ func (a *ABI) writeField(binaryEncoder *Encoder, fieldName string, fieldType str
 			Time: t,
 		}
 	case "name":
-		if len(value.Str) > 12 {
+		// FIXME: 新版本的 eos支持最长13位
+		if len(value.Str) > 13 {
 			return fmt.Errorf("writing field: name: %s is to long. expected length of max 12 characters", value.Str)
 		}
 		object = Name(value.Str)
