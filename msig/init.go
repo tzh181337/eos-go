@@ -5,11 +5,11 @@ import (
 )
 
 func init() {
-	eos.RegisterAction(AN("eosio.msig"), ActN("propose"), &Propose{})
-	eos.RegisterAction(AN("eosio.msig"), ActN("approve"), &Approve{})
-	eos.RegisterAction(AN("eosio.msig"), ActN("unapprove"), &Unapprove{})
-	eos.RegisterAction(AN("eosio.msig"), ActN("cancel"), &Cancel{})
-	eos.RegisterAction(AN("eosio.msig"), ActN("exec"), &Exec{})
+	eos.RegisterAction(AN("amax.msig"), ActN("propose"), &Propose{})
+	eos.RegisterAction(AN("amax.msig"), ActN("approve"), &Approve{})
+	eos.RegisterAction(AN("amax.msig"), ActN("unapprove"), &Unapprove{})
+	eos.RegisterAction(AN("amax.msig"), ActN("cancel"), &Cancel{})
+	eos.RegisterAction(AN("amax.msig"), ActN("exec"), &Exec{})
 }
 
 var AN = eos.AN

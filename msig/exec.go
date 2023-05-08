@@ -5,10 +5,10 @@ import (
 )
 
 // NewExec returns a `exec` action that lives on the
-// `eosio.msig` contract.
+// `amax.msig` contract.
 func NewExec(proposer eos.AccountName, proposalName eos.Name, executer eos.AccountName) *eos.Action {
 	return &eos.Action{
-		Account: eos.AccountName("eosio.msig"),
+		Account: eos.AccountName("amax.msig"),
 		Name:    eos.ActionName("exec"),
 		// TODO: double check in this package that the `Actor` is always the `proposer`..
 		Authorization: []eos.PermissionLevel{

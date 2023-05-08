@@ -5,10 +5,10 @@ import (
 )
 
 // NewUnapprove returns a `unapprove` action that lives on the
-// `eosio.msig` contract.
+// `amax.msig` contract.
 func NewUnapprove(proposer eos.AccountName, proposalName eos.Name, level eos.PermissionLevel) *eos.Action {
 	return &eos.Action{
-		Account:       eos.AccountName("eosio.msig"),
+		Account:       eos.AccountName("amax.msig"),
 		Name:          eos.ActionName("unapprove"),
 		Authorization: []eos.PermissionLevel{level},
 		ActionData:    eos.NewActionData(Unapprove{proposer, proposalName, level}),

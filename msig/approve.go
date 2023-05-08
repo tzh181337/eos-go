@@ -5,10 +5,10 @@ import (
 )
 
 // NewApprove returns a `approve` action that lives on the
-// `eosio.msig` contract.
+// `amax.msig` contract.
 func NewApprove(proposer eos.AccountName, proposalName eos.Name, level eos.PermissionLevel) *eos.Action {
 	return &eos.Action{
-		Account:       eos.AccountName("eosio.msig"),
+		Account:       eos.AccountName("amax.msig"),
 		Name:          eos.ActionName("approve"),
 		Authorization: []eos.PermissionLevel{level},
 		ActionData:    eos.NewActionData(Approve{proposer, proposalName, level}),

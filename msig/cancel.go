@@ -5,10 +5,10 @@ import (
 )
 
 // NewCancel returns a `cancel` action that lives on the
-// `eosio.msig` contract.
+// `amax.msig` contract.
 func NewCancel(proposer eos.AccountName, proposalName eos.Name, canceler eos.AccountName) *eos.Action {
 	return &eos.Action{
-		Account: eos.AccountName("eosio.msig"),
+		Account: eos.AccountName("amax.msig"),
 		Name:    eos.ActionName("cancel"),
 		// TODO: double check in this package that the `Actor` is always the `proposer`..
 		Authorization: []eos.PermissionLevel{

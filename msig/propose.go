@@ -5,10 +5,10 @@ import (
 )
 
 // NewPropose returns a `propose` action that lives on the
-// `eosio.msig` contract.
+// `amax.msig` contract.
 func NewPropose(proposer eos.AccountName, proposalName eos.Name, requested []eos.PermissionLevel, transaction *eos.Transaction) *eos.Action {
 	return &eos.Action{
-		Account: eos.AccountName("eosio.msig"),
+		Account: eos.AccountName("amax.msig"),
 		Name:    eos.ActionName("propose"),
 		Authorization: []eos.PermissionLevel{
 			{Actor: proposer, Permission: eos.PermissionName("active")},
