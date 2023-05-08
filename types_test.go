@@ -654,8 +654,11 @@ func TestNewAssetFromString(t *testing.T) {
 		{"1.0001 TEST", 10001, 4, "TEST", nil},
 		{"0.1 TEST", 1, 1, "TEST", nil},
 		{".1 TEST", 1, 1, "TEST", nil},
+		{"0", 0, 0, "", nil},
+		{"0 ", 0, 0, "", nil},
 
 		{"", 0, 0, "", errors.New("input cannot be empty")},
+		{"1", 0, 0, "", errors.New("invalid format \"1\", expected an amount and a currency symbol")},
 		{".00.001", 0, 0, "", errors.New(`invalid asset amount ".00.001", expected amount to have at most a single dot`)},
 		{"1 ABCDEFGH", 0, 0, "", errors.New(`invalid asset "1 ABCDEFGH", symbol should have less than 7 characters`)},
 		{"1 A AND B", 0, 0, "", errors.New(`invalid asset "1 A AND B", expecting an amount alone or an amount and a currency symbol`)},
@@ -920,4 +923,62 @@ func TestBlob(t *testing.T) {
 		require.Equal(tt, "illegal base64 data at input byte 3", err.Error())
 		assert.Empty(tt, data)
 	})
+}
+
+func TestTimePoint_AsTime(t *testing.T) {
+	tests := []struct {
+		name string
+		f    string
+		tp   TimePoint
+		want time.Time
+	}{
+		{
+			name: "converts timestamp to the correct time",
+			f:    "\"2022-06-30T09:46:14.500\"",
+			want: time.Date(2022, time.June, 30, 9, 46, 14, 500000000, time.UTC),
+		},
+		{
+			name: "converts zero value to correct time",
+			want: time.Unix(0, 0).UTC(),
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if len(tt.f) > 0 {
+				err := tt.tp.UnmarshalJSON([]byte(tt.f))
+				require.NoError(t, err)
+			}
+
+			assert.Equalf(t, tt.want, tt.tp.AsTime(), "AsTime()")
+		})
+	}
+}
+
+func TestTimePointSec_AsTime(t *testing.T) {
+	tests := []struct {
+		name string
+		f    string
+		tp   TimePointSec
+		want time.Time
+	}{
+		{
+			name: "converts timestamp to the correct time",
+			f:    "\"2022-07-01T06:40:10\"",
+			want: time.Date(2022, time.July, 1, 6, 40, 10, 0, time.UTC),
+		},
+		{
+			name: "converts zero value to correct time",
+			want: time.Unix(0, 0).UTC(),
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if len(tt.f) > 0 {
+				err := tt.tp.UnmarshalJSON([]byte(tt.f))
+				require.NoError(t, err)
+			}
+
+			assert.Equalf(t, tt.want, tt.tp.AsTime(), "AsTime()")
+		})
+	}
 }

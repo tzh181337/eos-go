@@ -11,6 +11,7 @@ import (
 
 	"github.com/armoniax/eos-go/btcsuite/btcd/btcec"
 	"github.com/armoniax/eos-go/btcsuite/btcutil"
+	"github.com/armoniax/eos-go/btcsuite/btcutil/base58"
 )
 
 const PrivateKeyPrefix = "PVT_"
@@ -50,8 +51,13 @@ func NewPrivateKey(wif string) (*PrivateKey, error) {
 
 		switch curvePrefix {
 		case "K1_":
+			// See https://github.com/EOSIO/eosjs-ecc/blob/a806b93fbbccec8d38c0c02998d204ff2040a6ae/src/key_private.js#L50
+			decoded := base58.Decode(privKeyMaterial)
+			key := append([]byte{128}, decoded[:len(decoded)-4]...)
+			checksum := btcutil.DoubleHashB(key)
+			wifKey := base58.Encode(append(key, checksum[0:4]...))
 
-			wifObj, err := btcutil.DecodeWIF(privKeyMaterial)
+			wifObj, err := btcutil.DecodeWIF(wifKey)
 			if err != nil {
 				return nil, err
 			}
@@ -173,8 +179,13 @@ func NewAMAPrivateKey(wif string) (*PrivateKey, error) {
 
 		switch curvePrefix {
 		case "K1_":
+			// See https://github.com/EOSIO/eosjs-ecc/blob/a806b93fbbccec8d38c0c02998d204ff2040a6ae/src/key_private.js#L50
+			decoded := base58.Decode(privKeyMaterial)
+			key := append([]byte{128}, decoded[:len(decoded)-4]...)
+			checksum := btcutil.DoubleHashB(key)
+			wifKey := base58.Encode(append(key, checksum[0:4]...))
 
-			wifObj, err := btcutil.DecodeWIF(privKeyMaterial)
+			wifObj, err := btcutil.DecodeWIF(wifKey)
 			if err != nil {
 				return nil, err
 			}

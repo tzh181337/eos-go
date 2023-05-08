@@ -150,6 +150,64 @@ func TestABI_DecodeTable(t *testing.T) {
 
 }
 
+func Test_DecodeTableRowVariant(t *testing.T) {
+
+	abiString := `
+{
+  "version": "eosio::abi/1.3",
+  "types": [],
+  "structs": [
+    {
+      "name": "account_v0",
+      "base": "",
+      "fields": [
+        {
+          "name": "owner",
+          "type": "name"
+        },
+        {
+          "name": "balance",
+          "type": "asset"
+        }
+      ]
+    }
+  ],
+  "actions": [],
+  "tables": [
+    {
+      "name": "account",
+      "index_type": "i64",
+      "type": "variant<account_v0>"
+    }
+  ],
+  "ricardian_clauses": [],
+  "variants": [
+    {
+      "name": "variant<account_v0>",
+      "types": [
+        "account_v0"
+      ]
+    }
+  ]
+}
+`
+
+	abi, err := NewABI(strings.NewReader(abiString))
+	require.NoError(t, err)
+
+	tableDef := abi.TableForName("account")
+	require.NotNil(t, tableDef)
+
+	data, err := hex.DecodeString(`00000000005c95b191198a8abe0000000004454f5300000000`)
+	require.NoError(t, err)
+
+	res, err := abi.DecodeTableRowTyped(tableDef.Type, data)
+	require.NoError(t, err)
+
+	assert.Equal(t, "master", gjson.GetBytes(res, "owner").String())
+	assert.Equal(t, "319675.0361 EOS", gjson.GetBytes(res, "balance").String())
+}
+
 func TestABI_DecodeTableRowMissingTable(t *testing.T) {
 
 	abiReader := strings.NewReader(abiString)
@@ -1152,6 +1210,98 @@ func TestABI_Read(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestABI_decodeActionResultNumber(t *testing.T) {
+
+	abi := &ABI{
+		Structs: []StructDef{
+			{Name: "numbervalue", Fields: []FieldDef{{Name: "number", Type: "uint64"}}},
+		},
+		Actions: []ActionDef{
+			{Name: "numbervalue", Type: "numbervalue"},
+		},
+		ActionResults: []ActionResultDef{
+			{Name: "numbervalue", ResultType: "uint64"},
+		},
+	}
+
+	buffer, err := hex.DecodeString("7b00000000000000")
+	require.NoError(t, err)
+
+	res, err := abi.DecodeActionResult(buffer, "numbervalue")
+	require.NoError(t, err)
+
+	assert.Equal(t, "123", string(res))
+}
+
+func TestABI_decodeActionResultCustom(t *testing.T) {
+
+	abi := &ABI{
+		Structs: []StructDef{
+			{Name: "custom", Fields: []FieldDef{
+				{Name: "message", Type: "name"},
+				{Name: "extra", Type: "string"},
+				{Name: "number", Type: "uint64"},
+			}},
+			{Name: "customvalue", Fields: []FieldDef{
+				{Name: "message", Type: "name"},
+				{Name: "extra", Type: "string"},
+				{Name: "number", Type: "uint64"},
+			}},
+		},
+		Actions: []ActionDef{
+			{Name: "customvalue", Type: "customvalue"},
+		},
+		ActionResults: []ActionResultDef{
+			{Name: "customvalue", ResultType: "custom"},
+		},
+	}
+
+	buffer, err := hex.DecodeString("00000000001aa36a05776f726c647b00000000000000")
+	require.NoError(t, err)
+
+	res, err := abi.DecodeActionResult(buffer, "customvalue")
+	require.NoError(t, err)
+
+	assert.JSONEq(t, `{"extra":"world","message":"hello","number":123}`, string(res))
+}
+
+func TestABI_decodeActionResultVector(t *testing.T) {
+
+	abi := &ABI{
+		Structs: []StructDef{
+			{Name: "vectorvalue", Fields: []FieldDef{
+				{Name: "message", Type: "string[]"},
+			}},
+		},
+		Actions: []ActionDef{
+			{Name: "vectorvalue", Type: "vectorvalue"},
+		},
+		ActionResults: []ActionResultDef{
+			{Name: "vectorvalue", ResultType: "string[]"},
+		},
+	}
+
+	buffer, err := hex.DecodeString("03036f6e650374776f057468726565")
+	require.NoError(t, err)
+
+	res, err := abi.DecodeActionResult(buffer, "vectorvalue")
+	require.NoError(t, err)
+
+	assert.JSONEq(t, `["one", "two", "three"]`, string(res))
+}
+
+func TestABI_decodeActionResultErr(t *testing.T) {
+
+	abi := &ABI{
+		Structs:       []StructDef{},
+		Actions:       []ActionDef{},
+		ActionResults: []ActionResultDef{},
+	}
+
+	_, err := abi.DecodeActionResult([]byte{}, "invalid")
+	assert.Equal(t, fmt.Errorf("action_result invalid not found in abi").Error(), err.Error())
 }
 
 func TestABI_Read_Symbol(t *testing.T) {

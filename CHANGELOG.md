@@ -5,13 +5,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Unreleased
 
+* Changed `NewAssetFromString` validation to allow parsing of empty assets
+* Added `action_trace_v1` field
+* Added `AsTime` helper functions to convert `TimePoint` and `TimePointSec` to `time.Time`
+* Added support for decoding action results
+* Raised the minimum supporting Go version 1.13 -> 1.17
+* Added unit tests of REST API
+* Added `earliest_available_block_num`, `fork_db_head_block_num`, `fork_db_head_block_id`, `last_irreversible_block_time`, `total_cpu_weight`, `total_net_weight`, & `server_full_version_string` fields in `InfoResp`
+* Added `head_block_num`, `head_block_time`, `rex_info`, `subjective_cpu_bill_limit`, & `eosio_any_linked_actions` fields in `AccountResp`
+* Added the new type `RexInfo`, `LinkedAction`
+* Added `linked_actions` in `Permission`
+* Added `context_free_data` & `transaction` fields in `PackedTransaction`
+
 #### Breaking Changes
+
+* `AccountResp.last_code_update` & `AccountResp.created` in `AccountResp` are now `BlockTimestamp`, were previously `JSONTime`
 
 #### Added
 
 #### Changed
 
 #### Fixed
+
+* Fixed decoding of table rows with variant types.
+
+* Fixed serialization of `map[K]V` when using `eos.MarshalBinary` so that ordering in which the keys are serialized is in lexicographical order, just like JSON serialization.
+
+* Updated to latest version of `github.com/streamingfast/logging` library.
+
+* Fix NewPrivateKey correctly working with PVT_K1 keys (#177)
+
+* Fixed ABI encoder for `SymbolCode` type.
 
 #### Deprecated
 
@@ -34,13 +58,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Added
 
 * Add EOSIO Testnet symbol (#165)
+
 * Update ActionResp (#166)
 
 #### Changed
 
+* Updated to latest version of `github.com/streamingfast/logging` library.
+
+* `eos.MarshalBinary` will now refuses to serialize a `map[K]V` if `K`'s type is not comparable.
+
 #### Fixed
 
+* Fixed serialization of `map[K]V` types by sorting the keys to have a stable order.
+
 * Bugfix StringToSymbol (44b6fbd)
+
 * Fixed built-in examples (pointing by default to EOS Nation API nodes) (36114bd)
 
 #### Deprecated
