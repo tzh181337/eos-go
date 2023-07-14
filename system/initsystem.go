@@ -5,14 +5,14 @@ import (
 )
 
 // NewInitSystem returns a `init` action that lives on the
-// `eosio.system` contract.
+// `amax.system` contract.
 func NewInitSystem(version eos.Varuint32, core eos.Symbol) *eos.Action {
 	return &eos.Action{
-		Account: AN("eosio"),
+		Account: AN("amax"),
 		Name:    ActN("init"),
 		Authorization: []eos.PermissionLevel{
 			{
-				Actor:      AN("eosio"),
+				Actor:      AN("amax"),
 				Permission: eos.PermissionName("active"),
 			},
 		},
@@ -23,7 +23,7 @@ func NewInitSystem(version eos.Varuint32, core eos.Symbol) *eos.Action {
 	}
 }
 
-// Init represents the `eosio.system::init` action
+// Init represents the `amax.system::init` action
 type Init struct {
 	Version eos.Varuint32 `json:"version"`
 	Core    eos.Symbol    `json:"core"`

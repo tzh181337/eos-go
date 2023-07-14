@@ -6,15 +6,15 @@ import (
 )
 
 // NewSetPriv returns a `setpriv` action that lives on the
-// `eosio.bios` contract. It should exist only when booting a new
+// `amax.bios` contract. It should exist only when booting a new
 // network, as it is replaced using the `eos-bios` boot process by the
-// `eosio.system` contract.
+// `amax.system` contract.
 func NewSetProds(producers []ProducerKey) *eos.Action {
 	a := &eos.Action{
-		Account: AN("eosio"),
+		Account: AN("amax"),
 		Name:    ActN("setprods"),
 		Authorization: []eos.PermissionLevel{
-			{Actor: AN("eosio"), Permission: PN("active")},
+			{Actor: AN("amax"), Permission: PN("active")},
 		},
 		ActionData: eos.NewActionData(SetProds{
 			Schedule: producers,
@@ -23,7 +23,7 @@ func NewSetProds(producers []ProducerKey) *eos.Action {
 	return a
 }
 
-// SetProds is present in `eosio.bios` contract. Used only at boot time.
+// SetProds is present in `amax.bios` contract. Used only at boot time.
 type SetProds struct {
 	Schedule []ProducerKey `json:"schedule"`
 }

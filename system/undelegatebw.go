@@ -5,10 +5,10 @@ import (
 )
 
 // NewUndelegateBW returns a `undelegatebw` action that lives on the
-// `eosio.system` contract.
+// `amax.system` contract.
 func NewUndelegateBW(from, receiver eos.AccountName, unstakeCPU, unstakeNet eos.Asset) *eos.Action {
 	return &eos.Action{
-		Account: AN("eosio"),
+		Account: AN("amax"),
 		Name:    ActN("undelegatebw"),
 		Authorization: []eos.PermissionLevel{
 			{Actor: from, Permission: PN("active")},
@@ -22,7 +22,7 @@ func NewUndelegateBW(from, receiver eos.AccountName, unstakeCPU, unstakeNet eos.
 	}
 }
 
-// UndelegateBW represents the `eosio.system::undelegatebw` action.
+// UndelegateBW represents the `amax.system::undelegatebw` action.
 type UndelegateBW struct {
 	From       eos.AccountName `json:"from"`
 	Receiver   eos.AccountName `json:"receiver"`

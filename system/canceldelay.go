@@ -2,7 +2,7 @@ package system
 
 import "github.com/armoniax/eos-go"
 
-// NewCancelDelay creates an action from the `eosio.system` contract
+// NewCancelDelay creates an action from the `amax.system` contract
 // called `canceldelay`.
 //
 // `canceldelay` allows you to cancel a deferred transaction,
@@ -11,7 +11,7 @@ import "github.com/armoniax/eos-go"
 // with that same authority.
 func NewCancelDelay(cancelingAuth eos.PermissionLevel, transactionID eos.Checksum256) *eos.Action {
 	a := &eos.Action{
-		Account: AN("eosio"),
+		Account: AN("amax"),
 		Name:    ActN("canceldelay"),
 		Authorization: []eos.PermissionLevel{
 			cancelingAuth,

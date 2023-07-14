@@ -5,10 +5,10 @@ import (
 )
 
 // NewUnregProducer returns a `unregprod` action that lives on the
-// `eosio.system` contract.
+// `amax.system` contract.
 func NewUnregProducer(producer eos.AccountName) *eos.Action {
 	return &eos.Action{
-		Account: AN("eosio"),
+		Account: AN("amax"),
 		Name:    ActN("unregprod"),
 		Authorization: []eos.PermissionLevel{
 			{Actor: producer, Permission: PN("active")},
@@ -19,7 +19,7 @@ func NewUnregProducer(producer eos.AccountName) *eos.Action {
 	}
 }
 
-// UnregProducer represents the `eosio.system::unregprod` action
+// UnregProducer represents the `amax.system::unregprod` action
 type UnregProducer struct {
 	Producer eos.AccountName `json:"producer"`
 }

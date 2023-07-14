@@ -5,10 +5,10 @@ import (
 )
 
 // NewDelegateBW returns a `delegatebw` action that lives on the
-// `eosio.system` contract.
+// `amax.system` contract.
 func NewDelegateBW(from, receiver eos.AccountName, stakeCPU, stakeNet eos.Asset, transfer bool) *eos.Action {
 	return &eos.Action{
-		Account: AN("eosio"),
+		Account: AN("amax"),
 		Name:    ActN("delegatebw"),
 		Authorization: []eos.PermissionLevel{
 			{Actor: from, Permission: PN("active")},
@@ -23,7 +23,7 @@ func NewDelegateBW(from, receiver eos.AccountName, stakeCPU, stakeNet eos.Asset,
 	}
 }
 
-// DelegateBW represents the `eosio.system::delegatebw` action.
+// DelegateBW represents the `amax.system::delegatebw` action.
 type DelegateBW struct {
 	From     eos.AccountName `json:"from"`
 	Receiver eos.AccountName `json:"receiver"`

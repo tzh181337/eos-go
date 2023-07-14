@@ -5,10 +5,10 @@ import (
 )
 
 // NewRefund returns a `refund` action that lives on the
-// `eosio.system` contract.
+// `amax.system` contract.
 func NewRefund(owner eos.AccountName) *eos.Action {
 	return &eos.Action{
-		Account: AN("eosio"),
+		Account: AN("amax"),
 		Name:    ActN("refund"),
 		Authorization: []eos.PermissionLevel{
 			{Actor: owner, Permission: PN("active")},
@@ -19,7 +19,7 @@ func NewRefund(owner eos.AccountName) *eos.Action {
 	}
 }
 
-// Refund represents the `eosio.system::refund` action
+// Refund represents the `amax.system::refund` action
 type Refund struct {
 	Owner eos.AccountName `json:"owner"`
 }

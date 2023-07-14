@@ -4,13 +4,13 @@ import (
 	eos "github.com/armoniax/eos-go"
 )
 
-// NewSetalimits sets the account limits. Requires signature from `eosio@active` account.
+// NewSetalimits sets the account limits. Requires signature from `amax@active` account.
 func NewSetalimits(account eos.AccountName, ramBytes, netWeight, cpuWeight int64) *eos.Action {
 	a := &eos.Action{
-		Account: AN("eosio"),
+		Account: AN("amax"),
 		Name:    ActN("setalimit"),
 		Authorization: []eos.PermissionLevel{
-			{Actor: eos.AccountName("eosio"), Permission: PN("active")},
+			{Actor: eos.AccountName("amax"), Permission: PN("active")},
 		},
 		ActionData: eos.NewActionData(Setalimits{
 			Account:   account,
@@ -22,7 +22,7 @@ func NewSetalimits(account eos.AccountName, ramBytes, netWeight, cpuWeight int64
 	return a
 }
 
-// Setalimits represents the `eosio.system::setalimit` action.
+// Setalimits represents the `amax.system::setalimit` action.
 type Setalimits struct {
 	Account   eos.AccountName `json:"account"`
 	RAMBytes  int64           `json:"ram_bytes"`

@@ -2,14 +2,14 @@ package system
 
 import "github.com/armoniax/eos-go"
 
-// NewUpdateAuth creates an action from the `eosio.system` contract
+// NewUpdateAuth creates an action from the `amax.system` contract
 // called `updateauth`.
 //
 // usingPermission needs to be `owner` if you want to modify the
 // `owner` authorization, otherwise `active` will do for the rest.
 func NewUpdateAuth(account eos.AccountName, permission, parent eos.PermissionName, authority eos.Authority, usingPermission eos.PermissionName) *eos.Action {
 	a := &eos.Action{
-		Account: AN("eosio"),
+		Account: AN("amax"),
 		Name:    ActN("updateauth"),
 		Authorization: []eos.PermissionLevel{
 			{

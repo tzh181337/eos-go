@@ -6,10 +6,10 @@ import (
 )
 
 // NewNewAccount returns a `newaccount` action that lives on the
-// `eosio.system` contract.
+// `amax.system` contract.
 func NewNewAccount(creator, newAccount eos.AccountName, publicKey ecc.PublicKey) *eos.Action {
 	return &eos.Action{
-		Account: AN("eosio"),
+		Account: AN("amax"),
 		Name:    ActN("newaccount"),
 		Authorization: []eos.PermissionLevel{
 			{Actor: creator, Permission: PN("active")},
@@ -42,11 +42,11 @@ func NewNewAccount(creator, newAccount eos.AccountName, publicKey ecc.PublicKey)
 }
 
 // NewDelegatedNewAccount returns a `newaccount` action that lives on the
-// `eosio.system` contract. It is filled with an authority structure that
+// `amax.system` contract. It is filled with an authority structure that
 // delegates full control of the new account to an already existing account.
 func NewDelegatedNewAccount(creator, newAccount eos.AccountName, delegatedTo eos.AccountName) *eos.Action {
 	return &eos.Action{
-		Account: AN("eosio"),
+		Account: AN("amax"),
 		Name:    ActN("newaccount"),
 		Authorization: []eos.PermissionLevel{
 			{Actor: creator, Permission: PN("active")},
@@ -85,11 +85,11 @@ func NewDelegatedNewAccount(creator, newAccount eos.AccountName, delegatedTo eos
 }
 
 // NewCustomNewAccount returns a `newaccount` action that lives on the
-// `eosio.system` contract. You can specify your own `owner` and
+// `amax.system` contract. You can specify your own `owner` and
 // `active` permissions.
 func NewCustomNewAccount(creator, newAccount eos.AccountName, owner, active eos.Authority) *eos.Action {
 	return &eos.Action{
-		Account: AN("eosio"),
+		Account: AN("amax"),
 		Name:    ActN("newaccount"),
 		Authorization: []eos.PermissionLevel{
 			{Actor: creator, Permission: PN("active")},
@@ -103,7 +103,7 @@ func NewCustomNewAccount(creator, newAccount eos.AccountName, owner, active eos.
 	}
 }
 
-// NewAccount represents a `newaccount` action on the `eosio.system`
+// NewAccount represents a `newaccount` action on the `amax.system`
 // contract. It is one of the rare ones to be hard-coded into the
 // blockchain.
 type NewAccount struct {

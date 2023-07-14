@@ -6,7 +6,7 @@ import (
 
 func NewBidname(bidder, newname eos.AccountName, bid eos.Asset) *eos.Action {
 	a := &eos.Action{
-		Account: AN("eosio"),
+		Account: AN("amax"),
 		Name:    ActN("bidname"),
 		Authorization: []eos.PermissionLevel{
 			{Actor: bidder, Permission: PN("active")},
@@ -20,7 +20,7 @@ func NewBidname(bidder, newname eos.AccountName, bid eos.Asset) *eos.Action {
 	return a
 }
 
-// Bidname represents the `eosio.system_contract::bidname` action.
+// Bidname represents the `amax.system_contract::bidname` action.
 type Bidname struct {
 	Bidder  eos.AccountName `json:"bidder"`
 	Newname eos.AccountName `json:"newname"`

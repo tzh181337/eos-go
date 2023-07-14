@@ -4,7 +4,7 @@ import eos "github.com/armoniax/eos-go"
 
 func NewTransfer(from, to eos.AccountName, quantity eos.Asset, memo string) *eos.Action {
 	return &eos.Action{
-		Account: AN("eosio.token"),
+		Account: AN("amax.token"),
 		Name:    ActN("transfer"),
 		Authorization: []eos.PermissionLevel{
 			{Actor: from, Permission: PN("active")},
@@ -18,7 +18,7 @@ func NewTransfer(from, to eos.AccountName, quantity eos.Asset, memo string) *eos
 	}
 }
 
-// Transfer represents the `transfer` struct on `eosio.token` contract.
+// Transfer represents the `transfer` struct on `amax.token` contract.
 type Transfer struct {
 	From     eos.AccountName `json:"from"`
 	To       eos.AccountName `json:"to"`

@@ -2,14 +2,14 @@ package system
 
 import "github.com/armoniax/eos-go"
 
-// NewUnlinkAuth creates an action from the `eosio.system` contract
+// NewUnlinkAuth creates an action from the `amax.system` contract
 // called `unlinkauth`.
 //
 // `unlinkauth` detaches a previously set permission from a
 // `code::actionName`. See `linkauth`.
 func NewUnlinkAuth(account, code eos.AccountName, actionName eos.ActionName) *eos.Action {
 	a := &eos.Action{
-		Account: AN("eosio"),
+		Account: AN("amax"),
 		Name:    ActN("unlinkauth"),
 		Authorization: []eos.PermissionLevel{
 			{

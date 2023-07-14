@@ -8,7 +8,7 @@ import (
 // bytes of RAM, and grant them to the `receiver` account.
 func NewBuyRAMBytes(payer, receiver eos.AccountName, bytes uint32) *eos.Action {
 	a := &eos.Action{
-		Account: AN("eosio"),
+		Account: AN("amax"),
 		Name:    ActN("buyrambytes"),
 		Authorization: []eos.PermissionLevel{
 			{Actor: payer, Permission: eos.PermissionName("active")},
@@ -22,7 +22,7 @@ func NewBuyRAMBytes(payer, receiver eos.AccountName, bytes uint32) *eos.Action {
 	return a
 }
 
-// BuyRAMBytes represents the `eosio.system::buyrambytes` action.
+// BuyRAMBytes represents the `amax.system::buyrambytes` action.
 type BuyRAMBytes struct {
 	Payer    eos.AccountName `json:"payer"`
 	Receiver eos.AccountName `json:"receiver"`

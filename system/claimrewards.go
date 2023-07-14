@@ -8,7 +8,7 @@ import (
 // bytes of RAM, and grant them to the `receiver` account.
 func NewClaimRewards(owner eos.AccountName) *eos.Action {
 	a := &eos.Action{
-		Account: AN("eosio"),
+		Account: AN("amax"),
 		Name:    ActN("claimrewards"),
 		Authorization: []eos.PermissionLevel{
 			{Actor: owner, Permission: eos.PermissionName("active")},
@@ -20,7 +20,7 @@ func NewClaimRewards(owner eos.AccountName) *eos.Action {
 	return a
 }
 
-// ClaimRewards represents the `eosio.system::claimrewards` action.
+// ClaimRewards represents the `amax.system::claimrewards` action.
 type ClaimRewards struct {
 	Owner eos.AccountName `json:"owner"`
 }

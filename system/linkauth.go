@@ -2,7 +2,7 @@ package system
 
 import "github.com/armoniax/eos-go"
 
-// NewLinkAuth creates an action from the `eosio.system` contract
+// NewLinkAuth creates an action from the `amax.system` contract
 // called `linkauth`.
 //
 // `linkauth` allows you to attach certain permission to the given
@@ -12,7 +12,7 @@ import "github.com/armoniax/eos-go"
 // can sign anything) for the given operation.
 func NewLinkAuth(account, code eos.AccountName, actionName eos.ActionName, requiredPermission eos.PermissionName) *eos.Action {
 	a := &eos.Action{
-		Account: AN("eosio"),
+		Account: AN("amax"),
 		Name:    ActN("linkauth"),
 		Authorization: []eos.PermissionLevel{
 			{

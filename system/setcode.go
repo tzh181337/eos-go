@@ -43,7 +43,7 @@ func NewSetCode(account eos.AccountName, wasmPath string) (out *eos.Action, err 
 
 func NewSetCodeContent(account eos.AccountName, codeContent []byte) *eos.Action {
 	return &eos.Action{
-		Account: AN("eosio"),
+		Account: AN("amax"),
 		Name:    ActN("setcode"),
 		Authorization: []eos.PermissionLevel{
 			{
@@ -84,7 +84,7 @@ func NewSetAbiContent(account eos.AccountName, abiContent []byte) (out *eos.Acti
 	}
 
 	return &eos.Action{
-		Account: AN("eosio"),
+		Account: AN("amax"),
 		Name:    ActN("setabi"),
 		Authorization: []eos.PermissionLevel{
 			{
@@ -107,7 +107,7 @@ func NewSetAbiFromAbi(account eos.AccountName, abi eos.ABI) (out *eos.Action, er
 	}
 
 	return &eos.Action{
-		Account: AN("eosio"),
+		Account: AN("amax"),
 		Name:    ActN("setabi"),
 		Authorization: []eos.PermissionLevel{
 			{
