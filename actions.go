@@ -26,6 +26,8 @@ type SetABI struct {
 }
 
 // Action
+//
+//export Action
 type Action struct {
 	Account       AccountName       `json:"account"`
 	Name          ActionName        `json:"name"`

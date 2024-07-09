@@ -1,12 +1,13 @@
 package main
 
 import (
+	"C"
 	"context"
 	"github.com/armoniax/eos-go"
 )
 
 //export SubmitTransaction
-func SubmitTransaction(rpcNode, privateKey string, eosActions []*eos.Action) string {
+func SubmitTransaction(rpcNode, privateKey, contractName, actionName, submitter, permission string, obj interface{}) string {
 	ctx := context.Background()
 	keyBag := &eos.KeyBag{}
 	err := keyBag.ImportAmaxPrivateKey(ctx, privateKey)
@@ -23,7 +24,8 @@ func SubmitTransaction(rpcNode, privateKey string, eosActions []*eos.Action) str
 		return err.Error()
 	}
 
-	tx := eos.NewTransaction(eosActions, txOpts)
+	eosActions := genAction(contractName, actionName, submitter, permission, obj)
+	tx := eos.NewTransaction([]*eos.Action{eosActions}, txOpts)
 	_, packedTrx, err := api.SignTransaction(ctx, tx, txOpts.ChainID, eos.CompressionNone)
 	if err != nil {
 		return err.Error()
@@ -37,8 +39,7 @@ func SubmitTransaction(rpcNode, privateKey string, eosActions []*eos.Action) str
 	return out.TransactionID
 }
 
-//export GenAction
-func GenAction(contractName, actionName, submitter, permission string, obj any) *eos.Action {
+func genAction(contractName, actionName, submitter, permission string, obj interface{}) *eos.Action {
 
 	action := genEosAction(eos.AccountName(contractName), actionName, eos.AccountName(submitter), permission)
 	if obj != nil {
